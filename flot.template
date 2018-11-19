@@ -10,6 +10,8 @@
 	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.js"></script>
 	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.crosshair.js"></script>
 	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.resize.js"></script>
+	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.stack.js"></script>
+
     <style type="text/css">
     html, body {
         height: 100%; /* make the percentage height on placeholder work */
@@ -47,6 +49,8 @@ var FTP = {{power}};
 
 $(function() {
 		var t= [], p= [];
+		var z1=[],z2=[],z3=[],z4=[],z5=[],z6=[],z7=[];
+
 		t = [ 
 			{% for item in ergList %}
 			[  {{item[0]}}, {{item[1]}}  ],
@@ -54,6 +58,13 @@ $(function() {
 			];		
 		for (var i = 0; i < t[t.length-1][0]; i += 1) {
 			p.push([i,FTP]);
+			z1.push([i,FTP*0.55]);
+			z2.push([i,FTP*0.10]);	//0.65
+			z3.push([i,FTP*0.05]);	//0.7
+			z4.push([i,FTP*0.05]);	//0.75
+			z5.push([i,FTP*0.10]);	//0.85
+			z6.push([i,FTP*0.25]);	//1.1
+			z7.push([i,FTP*0.40]);	//1.5
 		}
 		
 		var maxW = t[0][1];
@@ -61,20 +72,31 @@ $(function() {
 
 
 		for (i = 0; i < t.length; ++i) {
+
 			if (maxW < t[i][1])
 				maxW = t[i][1];
 			if (minW > t[i][1])
 				minW = t[i][1];
 		}
 
+		var stack = 1,
+			steps = false;
 
 		plot = $.plot("#placeholder", [
-			{ data: t, label: "Target = -0.00"},
-			{ data: p, label: "FTP = -0.00" }
+			{ data: t, label: "Target = -0.00",	color:"blue", 	lines:{lineWidth:2.5}},
+			{ data: p, label: "FTP = -0.00",	color:"red", 		lines:{fill:false}},
+
+			{ data: z1, label: "Z1:55%",			color: "violet",	stack:true,lines:{lineWidth:0,fill:0.2}},
+			{ data: z2, label: "Z2:65%",			color: "blue",		stack:true,lines:{lineWidth:0,fill:0.2}},
+			{ data: z3, label: "Z3:70%",			color: "green",		stack:true,lines:{lineWidth:0,fill:0.2}},
+			{ data: z4, label: "Z4:75%",			color: "orange",	stack:true,lines:{lineWidth:0,fill:0.1}},
+			{ data: z5, label: "Z5:85%",			color: "orange",	stack:true,lines:{lineWidth:0,fill:0.3}},
+			{ data: z6, label: "Z6:110%",			color: "red",		stack:true,lines:{lineWidth:0,fill:0.2}},
+			{ data: z7, label: "Z7:150%",			color: "red",		stack:true,lines:{lineWidth:0,fill:0.4}},
 		], {
 			series: {
 				lines: {
-					show: true
+					show: true,
 				}
 			},
 			crosshair: {
@@ -86,9 +108,11 @@ $(function() {
 			},
 			yaxis: {
 				min: minW*0.95,
-				max: maxW*1.05
+				//max: maxW*1.05
+				max: 1.2*FTP
 			}
 		});
+
 
 		var legends = $("#placeholder .legendLabel");
 
