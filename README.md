@@ -1,4 +1,4 @@
 # ergrunner
 Converts ERG files into runnable HTML/JS files
 
-![Example](example.png)
+![Example](https://github.com/radix07/ergrunner/blob/master/Example.png)
