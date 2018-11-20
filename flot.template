@@ -21,7 +21,7 @@
         font-size: smaller;
     }
 	#placeholder{
-	  width: 50%;
+	  width: 100%;
 	  margin: 0 auto;
 	}
 	#myDiv{
@@ -83,9 +83,8 @@ $(function() {
 			steps = false;
 
 		plot = $.plot("#placeholder", [
-			{ data: t, label: "Target = -0.00",	color:"blue", 	lines:{lineWidth:2.5}},
-			{ data: p, label: "FTP = -0.00",	color:"red", 		lines:{fill:false}},
-
+			{ data: t, label: "Target = Start",	color:"blue", 	lines:{lineWidth:2.5}},
+			{ data: p, label: "FTP = -0",	color:"red", 		lines:{fill:false}},
 			{ data: z1, label: "Z1:55%",			color: "violet",	stack:true,lines:{lineWidth:0,fill:0.2}},
 			{ data: z2, label: "Z2:65%",			color: "blue",		stack:true,lines:{lineWidth:0,fill:0.2}},
 			{ data: z3, label: "Z3:70%",			color: "green",		stack:true,lines:{lineWidth:0,fill:0.2}},
@@ -182,7 +181,7 @@ function myFunction() {
 			y = p1[1] + (p2[1] - p1[1]) * (timeDelta - p1[0]) / (p2[0] - p1[0]);
 		}
 
-		legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(2)));
+		legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(0)));
 	}
 	timeDelta++;
 	//minutes = Math.floor(timeDelta/60);
